@@ -1,5 +1,6 @@
 package com.example.app_notes;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ListView listView;
+    static ArrayList<String> list;
+    static ArrayAdapter arrayAdapter;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -28,17 +31,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         listView = findViewById(R.id.listview);
 
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Add Notes");
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list);
+        list = new ArrayList<>();
+        list.add("Example Note");
+        arrayAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list);
         listView.setAdapter(arrayAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent intent = new Intent(getApplicationContext(), notes.class);
+                startActivity(intent);
             }
         });
+
 
     }
 }
