@@ -8,6 +8,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.util.HashSet;
+
 public class notes extends AppCompatActivity {
 
 
@@ -40,6 +42,11 @@ public class notes extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 MainActivity.list.set(noteId, String.valueOf(s));
                 MainActivity.arrayAdapter.notifyDataSetChanged();
+
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.app_notes", MODE_PRIVATE);
+
+                HashSet<String> set = new HashSet<>(MainActivity.list);
+                sharedPreferences.edit().putStringSet("notes", set).apply();
             }
 
             @Override

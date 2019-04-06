@@ -2,6 +2,7 @@ package com.example.app_notes;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,9 +49,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView = findViewById(R.id.listview);
-
         list = new ArrayList<>();
-        list.add("Example Note");
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.app_notes", MODE_PRIVATE);
+        HashSet<String> set = (HashSet<String>) sharedPreferences.getStringSet("notes", null);
+
+        if(set == null){
+            list.add("Example Note");
+        }
+        else{
+            list = new ArrayList<>(set);
+        }
+
+
         arrayAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list);
         listView.setAdapter(arrayAdapter);
 
@@ -71,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 list.remove(position);
                                 arrayAdapter.notifyDataSetChanged();
+
+                                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.app_notes", MODE_PRIVATE);
+
+                                HashSet<String> set = new HashSet<>(MainActivity.list);
+                                sharedPreferences.edit().putStringSet("notes", set).apply();
                             }
                         }).setNegativeButton("NO", null).show();
                 return true;
