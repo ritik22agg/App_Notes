@@ -1,5 +1,7 @@
 package com.example.app_notes;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
@@ -14,16 +16,17 @@ public class notes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
 
-        editText = findViewById(R.id.notes);
 
-        if(MainActivity.list.get(0) == "Example Note"){
-            String s  = editText.getText().toString();
-            MainActivity.list.set(0, s);
-            MainActivity.arrayAdapter.notifyDataSetChanged();
-        }else{
-            String s  = editText.getText().toString();
-            MainActivity.list.add(s);
-            MainActivity.arrayAdapter.notifyDataSetChanged();
+        editText = findViewById(R.id.text);
+        Intent intent = getIntent();
+
+        int noteid = intent.getIntExtra("noteid", -1);
+
+
+        if(noteid == -1){
+            editText.setText(MainActivity.list.get(noteid));
         }
+
+
     }
 }
